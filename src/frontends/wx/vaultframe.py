@@ -44,12 +44,12 @@ class VaultFrame(wx.Frame):
             self.vault = None
             self._filterstring = ""
             self.displayed_entries = []
-            self.InsertColumn(0, _("Title"))
-            self.InsertColumn(1, _("Username"))
-            self.InsertColumn(2, _("Group"))
+            self.InsertColumn(0, _("Group"))
+            self.InsertColumn(1, _("Title"))
+            self.InsertColumn(2, _("Username"))
             self.SetColumnWidth(0, 256)
-            self.SetColumnWidth(1, 128)
-            self.SetColumnWidth(2, 256)
+            self.SetColumnWidth(1, 256)
+            self.SetColumnWidth(2, 128)
             self.sort_function = lambda e1, e2: cmp(e1.group, e2.group)
             self.update_fields()
 
@@ -65,11 +65,11 @@ class VaultFrame(wx.Frame):
               return "--"
             
             if (col == 0):
-                return self.displayed_entries[item].title
-            if (col == 1):
-                return self.displayed_entries[item].user
-            if (col == 2):
                 return self.displayed_entries[item].group
+            if (col == 1):
+                return self.displayed_entries[item].title
+            if (col == 2):
+                return self.displayed_entries[item].user
             return "--"
 
         def update_fields(self):
