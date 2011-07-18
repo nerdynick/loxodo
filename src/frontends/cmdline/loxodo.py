@@ -24,6 +24,7 @@ import getpass
 import readline
 import cmd
 import re
+import time
 
 from ...vault import Vault
 from ...config import config
@@ -39,6 +40,8 @@ class InteractiveConsole(cmd.Cmd):
 
         self.vi = False
         self.tabcomp = True
+        self.echo = False
+        self.mod = False
 
         cmd.Cmd.__init__(self)
         if sys.platform == "darwin":
@@ -414,14 +417,18 @@ class InteractiveConsole(cmd.Cmd):
         print "[group.title] username"
         print "URL: url"
         print "Notes: notes"
-        print "----------------------"
+        print "Last mod: modification time"
+        print "-"*10
         for record in vault_records:
             print "[%s.%s] %s" % (record.group.encode('utf-8', 'replace'),
                                    record.title.encode('utf-8', 'replace'),
                                    record.user.encode('utf-8', 'replace'))
-            print "URL: %s" % (record.url.encode('utf-8', 'replace'))
-            print "Notes: %s" % (record.notes.encode('utf-8', 'replace'))
-            print "-"*10
+            if record.url:
+                print "    URL: %s" % (record.url.encode('utf-8', 'replace'))
+            if record.notes:
+                print "    Notes: %s" % (record.notes.encode('utf-8', 'replace'))
+            if record.last_mod != 0:
+		print "    Last mod: %s" % time.strftime('%Y/%m/%d',time.gmtime(record.last_mod))
 
         print ""
 
@@ -512,6 +519,9 @@ Username : %s""" % (record.group.encode('utf-8', 'replace'),
 
             if record.url:
                 print "URL      : %s" % record.url.encode('utf-8', 'replace')
+
+            if record.last_mod != 0:
+                print "Last mod : %s" % time.strftime('%Y/%m/%d',time.gmtime(record.last_mod))
 
             print ""
 
