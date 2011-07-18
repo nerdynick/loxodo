@@ -42,6 +42,8 @@ class InteractiveConsole(cmd.Cmd):
         self.tabcomp = True
         self.echo = False
         self.mod = False
+        # options for sorting are 'alpha' and 'mod'
+        self.sort_key = 'alpha'
 
         cmd.Cmd.__init__(self)
         if sys.platform == "darwin":
@@ -113,10 +115,11 @@ class InteractiveConsole(cmd.Cmd):
             return
 
         print "\nCommands:"
-        print "  ".join(("ls", "show", 'add', 'mod', 'del', "save", 'quit', 'echo', 'uuid', 'vi', 'tab', 'export'))
+        print "  ".join(("ls", "show", 'add', 'mod', 'del', "save", 'quit', 'echo', 'sort', 'uuid', 'vi', 'tab', 'export'))
         print
         print "echo is %s" % self.echo
         print "uuid is %s" % self.uuid
+        print "sort is %s" % self.sort_key
         print
         print "vi editing mode is %s" % self.vi
         print "tab completition is %s" % self.tabcomp
@@ -407,7 +410,11 @@ class InteractiveConsole(cmd.Cmd):
             vault_records = self.find_titles(line)
         else:
             vault_records = self.vault.records[:]
+
+        if self.sort_key == 'alpha':
             vault_records.sort(lambda e1, e2: cmp(e1.title, e2.title))
+        elif self.sort_key == 'mod':
+            vault_records.sort(lambda e1, e2: cmp(e1.last_mod, e2.last_mod))
 
         if vault_records is None:
             print "No matches found."
@@ -431,6 +438,16 @@ class InteractiveConsole(cmd.Cmd):
 		print "    Last mod: %s" % time.strftime('%Y/%m/%d',time.gmtime(record.last_mod))
 
         print ""
+
+    def do_sort(self, line=None):
+        """
+        Change status of sort key
+        """
+        if self.sort_key == 'alpha':
+            self.sort_key = 'mod'
+        else:
+            self.sort_key = 'alpha'
+        print "sort key is %s" % self.sort_key
 
     def do_uuid(self, line=None):
         """
