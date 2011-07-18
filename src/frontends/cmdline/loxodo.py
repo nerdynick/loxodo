@@ -411,14 +411,14 @@ class InteractiveConsole(cmd.Cmd):
         else:
             vault_records = self.vault.records[:]
 
+        if vault_records is None:
+            print "No matches found."
+            return
+
         if self.sort_key == 'alpha':
             vault_records.sort(lambda e1, e2: cmp(e1.title, e2.title))
         elif self.sort_key == 'mod':
             vault_records.sort(lambda e1, e2: cmp(e1.last_mod, e2.last_mod))
-
-        if vault_records is None:
-            print "No matches found."
-            return
 
         print ""
         print "[group.title] username"
