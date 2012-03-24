@@ -24,14 +24,14 @@ if len(sys.argv) > 1:
     sys.exit()
 
 # In all other cases, use the "wx" frontend.    
-try:
-    import wx
-except ImportError, e:
-    print >> sys.stderr, 'Could not find wxPython, the wxWidgets Python bindings: %s' % e
-    print >> sys.stderr, 'Falling back to cmdline frontend.'
-    print >> sys.stderr, ''
-    from Loxodo.frontends.cmdline import loxodo
-    sys.exit()
-
-from Loxodo.frontends.wx import loxodo
-
+#try:
+#    import wx
+#except ImportError, e:
+#    print >> sys.stderr, 'Could not find wxPython, the wxWidgets Python bindings: %s' % e
+#    print >> sys.stderr, 'Falling back to cmdline frontend.'
+#    print >> sys.stderr, ''
+#    from Loxodo.frontends.cmdline import loxodo
+#    sys.exit()
+#
+#from Loxodo.frontends.wx import loxodo
+from Loxodo.frontends.qt import loxodo
