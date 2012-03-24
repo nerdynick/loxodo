@@ -194,15 +194,27 @@ class VaultFrame(wx.Frame):
         for i in range(len(statusbar_fields)):
             self.statusbar.SetStatusText(statusbar_fields[i], i)
 
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        _rowsizer = wx.BoxSizer(wx.HORIZONTAL)
+        #Create Search box
         self._searchbox = wx.SearchCtrl(self.panel, size=(200, -1))
         self._searchbox.ShowCancelButton(True)
         self.Bind(wx.EVT_SEARCHCTRL_CANCEL_BTN, self._on_search_cancel, self._searchbox)
         self.Bind(wx.EVT_TEXT, self._on_search_do, self._searchbox)
         self._searchbox.Bind(wx.EVT_CHAR, self._on_searchbox_char)
-
-        _rowsizer.Add(self._searchbox, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, 5)
+        
+        #Create Buttons
+        self.addBtn = wx.Button(self.panel, label="Add")
+        self.addBtn.Bind(wx.EVT_BUTTON, self._on_add)
+        self.removeBtn = wx.Button(self.panel, label="Delete")
+        self.removeBtn.Bind(wx.EVT_BUTTON, self._on_delete)
+        
+        #Build out toolbar
+        _rowsizer = wx.BoxSizer(wx.HORIZONTAL)
+        _rowsizer.Add(self.addBtn)
+        _rowsizer.Add(self.removeBtn)
+        _rowsizer.Add(self._searchbox, flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_RIGHT, border=5)
+        
+        #Put window together
+        sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(_rowsizer, 0, wx.ALIGN_RIGHT | wx.ALL, 5)
         sizer.Add(self.list, 1, wx.EXPAND, 0)
         self.panel.SetSizer(sizer)

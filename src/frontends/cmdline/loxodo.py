@@ -628,6 +628,7 @@ Username : %s""" % (record.group.encode('utf-8', 'replace'),
 
 def main(argv):
     # Options
+    #TODO: Switch to getopts to allow 2.7/3.0 support with backward support
     usage = "usage: %prog [options] [Vault.psafe3]"
     parser = OptionParser(usage=usage)
     parser.add_option("-l", "--ls", dest="do_ls", default=False, action="store_true", help="list contents of vault")
