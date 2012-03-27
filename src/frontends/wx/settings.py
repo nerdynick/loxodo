@@ -24,7 +24,7 @@ import struct
 import wx
 
 from .wxlocale import _
-from ...config import config
+from config import Config
 
 
 class Settings(wx.Dialog):
@@ -32,6 +32,7 @@ class Settings(wx.Dialog):
     Displays (and lets the user edit) a single Vault Record.
     """
     def __init__(self, parent):
+        self.config = Config()
         wx.Dialog.__init__(self, parent)
         wx.EVT_CLOSE(self, self._on_frame_close)
         self.Bind(wx.EVT_CHAR_HOOK, self._on_escape)
@@ -52,7 +53,7 @@ class Settings(wx.Dialog):
 
         self._cb_reduction = self._add_a_checkbox(_sz_fields,_("Avoid easy to mistake chars") + ":")
 
-        self._tc_alphabet = self._add_a_textcontrol(_sz_fields,_("Alphabet")+ ":",config.alphabet)
+        self._tc_alphabet = self._add_a_textcontrol(_sz_fields,_("Alphabet")+ ":",self.config.alphabet)
 
         _ln_line = wx.StaticLine(self.panel, -1, size=(20, -1), style=wx.LI_HORIZONTAL)
         _sz_main.Add(_ln_line, 0, wx.GROW|wx.ALIGN_CENTER_VERTICAL|wx.RIGHT|wx.TOP, 5)
@@ -115,22 +116,22 @@ class Settings(wx.Dialog):
         """
         Update fields from source
         """
-        self._sc_length.SetValue(config.pwlength)
-        self._tc_alphabet.SetValue(config.alphabet)
-        self._cb_reduction.SetValue(config.reduction)
-        self._search_notes.SetValue(config.search_notes)
-        self._search_passwd.SetValue(config.search_passwd)
+        self._sc_length.SetValue(self.config.pwlength)
+        self._tc_alphabet.SetValue(self.config.alphabet)
+        self._cb_reduction.SetValue(self.config.reduction)
+        self._search_notes.SetValue(self.config.search_notes)
+        self._search_passwd.SetValue(self.config.search_passwd)
 
     def _apply_changes(self, dummy):
         """
         Update source from fields
         """
-        config.pwlength = self._sc_length.GetValue()
-        config.reduction = self._cb_reduction.GetValue()
-        config.search_notes = self._search_notes.GetValue()
-        config.search_passwd = self._search_passwd.GetValue()
-        config.alphabet = self._tc_alphabet.GetValue()
-        config.save()
+        self.config.pwlength = self._sc_length.GetValue()
+        self.config.reduction = self._cb_reduction.GetValue()
+        self.config.search_notes = self._search_notes.GetValue()
+        self.config.search_passwd = self._search_passwd.GetValue()
+        self.config.alphabet = self._tc_alphabet.GetValue()
+        self.config.save()
 
     def _on_cancel(self, dummy):
         """

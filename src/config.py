@@ -19,13 +19,14 @@
 
 import os
 import platform
+import sys
 from ConfigParser import SafeConfigParser
-
 
 class Config(object):
     """
     Manages the configuration file
     """
+    
     def __init__(self):
         """
         DEFAULT VALUES
@@ -72,6 +73,14 @@ class Config(object):
 
         if not os.path.exists(self._fname):
             self.save()
+            
+        # store base script name, taking special care if we're "frozen" using py2app or py2exe
+        if hasattr(sys,"frozen") and (sys.platform != 'darwin'):
+            loc = os.path.basename(unicode(sys.executable, sys.getfilesystemencoding()))
+            self.set_basescript(loc)
+        else:
+            loc = os.path.basename(unicode(__file__, sys.getfilesystemencoding()))
+            self.set_basescript(os.path.realpath(loc))
 
     def set_basescript(self, basescript):
         self._basescript = basescript
@@ -133,5 +142,3 @@ class Config(object):
             return os.path.join(base_path, base_fname, base_fname + ".ini")
         else:
             return os.path.join(os.path.expanduser("~"),"."+ base_fname + ".ini")
-
-config = Config()

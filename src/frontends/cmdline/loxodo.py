@@ -27,7 +27,7 @@ import re
 import time
 
 from ...vault import Vault
-from ...config import config
+from config import Config
 
 class InteractiveConsole(cmd.Cmd):
 
@@ -640,7 +640,8 @@ def main(argv):
     parser.add_option("-e", "--echo", dest="echo", default=False, action="store_true", help="Passwords are displayed on the screen")
     parser.add_option("-u", "--uuid", dest="uuid", default=False, action="store_true", help="Show uuid while processing passwords")
     parser.add_option("-x", "--export", dest="export", default=False, action="store_true", help="Export database to csv")
-
+    
+    config = Config()
 
     (options, args) = parser.parse_args()
 

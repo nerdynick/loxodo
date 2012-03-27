@@ -22,7 +22,7 @@ import wx
 
 from .wxlocale import _
 from ...vault import Vault
-from ...config import config
+from config import Config
 from .recordframe import RecordFrame
 from .mergeframe import MergeFrame
 from .settings import Settings
@@ -38,6 +38,7 @@ class VaultFrame(wx.Frame):
         """
         def __init__(self, *args, **kwds):
             wx.ListCtrl.__init__(self, *args, **kwds)
+            self.config = Config()
             self.vault = None
             self._filterstring = ""
             self.displayed_entries = []
@@ -93,11 +94,11 @@ class VaultFrame(wx.Frame):
             if record.user.lower().find(self._filterstring.lower()) >= 0:
                return True
 
-            if config.search_notes:
+            if self.config.search_notes:
              if record.notes.lower().find(self._filterstring.lower()) >= 0:
                 return True
 
-            if config.search_passwd:
+            if self.config.search_passwd:
              if record.passwd.find(self._filterstring) >= 0:
                 return True
 
@@ -368,7 +369,7 @@ if not, write to the Free Software Foundation, Inc.,
                       )
 
         about = wx.AboutDialogInfo()
-        about.SetIcon(wx.Icon(os.path.join(os.path.dirname(config.get_basescript()), "resources", "loxodo-icon.png"), wx.BITMAP_TYPE_PNG, 128, 128))
+        about.SetIcon(wx.Icon(os.path.join(os.path.dirname(self.config.get_basescript()), "resources", "loxodo-icon.png"), wx.BITMAP_TYPE_PNG, 128, 128))
         about.SetName("Loxodo")
         about.SetVersion("0.0-git")
         about.SetCopyright("Copyright (C) 2008 Christoph Sommer <mail@christoph-sommer.de>")

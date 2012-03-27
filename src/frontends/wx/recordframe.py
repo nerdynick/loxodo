@@ -24,7 +24,7 @@ import struct
 import wx
 
 from .wxlocale import _
-from ...config import config
+from config import Config
 
 
 class RecordFrame(wx.Dialog):
@@ -174,6 +174,7 @@ class RecordFrame(wx.Dialog):
             self._tc_passwd.SetFocus()
 
     def _on_generate_passwd(self, dummy):
+        config = Config()
         _pwd = self.generate_password(alphabet=config.alphabet,pwd_length=config.pwlength,allow_reduction=config.reduction)
         self._tc_passwd.SetValue(_pwd)
 
