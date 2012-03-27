@@ -26,8 +26,8 @@ import tempfile
 import time
 import uuid
 
-from .twofish.twofish_ecb import TwofishECB
-from .twofish.twofish_cbc import TwofishCBC
+from twofish.twofish_ecb import TwofishECB
+from twofish.twofish_cbc import TwofishCBC
 
 class Vault(object):
     """
